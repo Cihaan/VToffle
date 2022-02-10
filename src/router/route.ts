@@ -1,21 +1,36 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Home from '../components/Home.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 //IMPORTATION COMPONENT
-import LandingComponent from "../components/auth/LandingComponent.vue"
+import TheLanding from "../components/auth/TheLanding.vue";
+import TheLogin from "../components/auth/TheLogin.vue";
+import TheRegister from "../components/auth/TheRegister.vue";
 
 //ROUTES
-const routes: Object = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home,
-    },
+const routes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    redirect: "/landing",
+  },
+  {
+    path: "/landing",
+    name: "TheLanding",
+    component: TheLanding,
+  },
+  {
+    path: "/login",
+    name: "TheLogin",
+    component: TheLogin,
+  },
+  {
+    path: "/register",
+    name: "TheRegister",
+    component: TheRegister,
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes: routes,
 });
 
-export default router
+export default router;
