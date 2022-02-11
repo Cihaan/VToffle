@@ -22,17 +22,17 @@ export default {};
       </div>
     </div>
     <div class="buttons">
+    <router-link to="/find">
       <input
         type="button"
-        routerLink="/login"
         class="btn btn-primary"
         value="Log in"
       />
+    </router-link>
       <hr class="hrr" />
-      <router-link to="/find">
+      <router-link to="/register">
         <input
           type="button"
-          routerLink="/register"
           class="btn btn-secondary"
           value="Sign up"
         />

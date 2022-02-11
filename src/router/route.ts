@@ -4,6 +4,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import TheLanding from "../components/auth/TheLanding.vue";
 import TheLogin from "../components/auth/TheLogin.vue";
 import TheRegister from "../components/auth/TheRegister.vue";
+import TheProfile from "../components/profile/TheProfile.vue"
 
 //ROUTES
 const routes: RouteRecordRaw[] = [
@@ -25,6 +26,11 @@ const routes: RouteRecordRaw[] = [
     path: "/register",
     name: "TheRegister",
     component: TheRegister,
+  },
+  {
+    path: "/profile",
+    name: "TheProfile",
+    component: TheProfile,
   },
 ];
 

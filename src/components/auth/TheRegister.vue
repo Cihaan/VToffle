@@ -35,7 +35,7 @@ export default {};
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .password-container {
   position: relative;
   .eye {

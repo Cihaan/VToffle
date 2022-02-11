@@ -24,7 +24,7 @@ export default {};
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 p {
   font-weight: 300;
   font-size: 1.2em;
