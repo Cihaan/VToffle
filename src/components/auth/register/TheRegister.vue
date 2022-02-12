@@ -1,12 +1,8 @@
-<script lang="ts">
-export default {};
-</script>
-
 <template>
   <div class="container">
-  <router-link to="/landing">
+    <router-link to="/landing">
       <i class="fas fa-chevron-left title"></i>
-  </router-link>
+    </router-link>
     <h2 class="spaced-title">Create Account</h2>
     <div>
       <label for="name">Name</label>
@@ -16,11 +12,7 @@ export default {};
       <label for="password">Password</label>
       <div class="password-container">
         <input type="password" class="text-field" />
-        <img
-          class="eye"
-          src="../../assets/logos/eye_closed.svg"
-          alt="eye_closed"
-        />
+        <img class="eye" src="../../../assets/logos/eye_closed.svg" alt="eye_closed" />
       </div>
     </div>
     <div class="buttons">
@@ -35,17 +27,5 @@ export default {};
   </div>
 </template>
 
-<style lang="scss" scoped>
-.password-container {
-  position: relative;
-  .eye {
-    position: absolute;
-    right: 15px;
-    bottom: 20px;
-    transition: all ease-in 200ms;
-  }
-  input:focus-within + .eye {
-    bottom: 25px;
-  }
-}
-</style>
+<script lang="ts" src="./TheRegister.ts"></script>
+<style scoped src="./TheRegister.scss"></style>

@@ -1,0 +1,12 @@
+.password-container {
+    position: relative;
+    .eye {
+      position: absolute;
+      right: 15px;
+      bottom: 20px;
+      transition: all ease-in 200ms;
+    }
+    input:focus-within + .eye {
+      bottom: 25px;
+    }
+  }
