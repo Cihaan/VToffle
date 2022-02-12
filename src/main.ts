@@ -8,6 +8,7 @@ import store from "./store/store";
 import TheLandingVue from "./components/auth/TheLanding.vue";
 import TheLogin from "./components/auth/TheLogin.vue";
 import TheRegister from "./components/auth/TheRegister.vue";
+import TheNavBar from "./components/navbar/TheNavBar.vue";
 
 const app = createApp(App);
 
@@ -17,5 +18,6 @@ app.use(router);
 app.component("the-landing", TheLandingVue);
 app.component("the-login", TheLogin);
 app.component("the-register", TheRegister);
+app.component("the-navbar", TheNavBar)
 
 app.mount("#app");

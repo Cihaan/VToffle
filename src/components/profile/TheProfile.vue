@@ -1,5 +1,6 @@
 <script lang="ts">
-export default {};
+import TheNavBar from "../navbar/TheNavBar.vue";
+export default {TheNavBar};
 </script>
 
 <template>
@@ -31,11 +32,10 @@ export default {};
           </div>
         </router-link>
       </div>
-      <router-link to="/landing">
-        <button class="btn btn-secondary">Log Out</button>
+      <router-link tag="button" class="btn btn-secondary" to="/landing">Log Out
       </router-link>
     </div>
-    <app-navbar></app-navbar>
+    <the-navbar></the-navbar>
   </div>
 </template>
 
