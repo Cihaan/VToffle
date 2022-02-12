@@ -6,13 +6,24 @@
     <h2 class="spaced-title">Create Account</h2>
     <div>
       <label for="name">Name</label>
-      <input type="text" class="text-field" />
+      <input v-model="name" id="name" name="name" type="text" class="text-field" />
       <label for="email">Email</label>
-      <input type="text" class="text-field" />
+      <input v-model="email" id="email" name="email" type="email" class="text-field" />
       <label for="password">Password</label>
       <div class="password-container">
-        <input type="password" class="text-field" />
-        <img class="eye" src="../../../assets/logos/eye_closed.svg" alt="eye_closed" />
+        <input
+          v-model="password"
+          id="password"
+          name="password"
+          type="password"
+          class="text-field"
+        />
+        <img
+          class="eye"
+          @click="showPassword"
+          src="../../../assets/logos/eye_open.svg"
+          alt="show password"
+        />
       </div>
     </div>
     <div class="buttons">
