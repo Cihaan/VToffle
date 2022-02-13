@@ -31,9 +31,12 @@
         <input type="button" class="btn btn-primary" value="Log in" />
       </router-link>
       <hr class="hrr" />
-      <router-link to="/login">
-        <input type="button" class="btn btn-secondary" value="Sign up" />
-      </router-link>
+      <input
+        type="submit"
+        @click="handleSubmit"
+        class="btn btn-secondary"
+        value="Sign up"
+      />
     </div>
   </div>
 </template>

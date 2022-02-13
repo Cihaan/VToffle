@@ -1,4 +1,6 @@
 import { defineComponent } from "vue";
+import axios from "axios";
+
 export default defineComponent ({
     data() {
         return {
@@ -20,6 +22,24 @@ export default defineComponent ({
               element.setAttribute("src", "/src/assets/logos/eye_open.svg");
               element.setAttribute("alt", "show password");
               element.previousElementSibling?.setAttribute("type", "password");
+            }
+          },
+          handleSubmit(): void {
+            if (this.name.length !==0 && this.email.length !== 0 && this.password.length !== 0) {
+              const data = {
+                name: this.name,
+                email: this.email,
+                password: this.password
+              }
+              axios.post('/register', data)
+              .then((res) => {
+                if (res) {
+                  this.$router.push('login')
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              })
             }
           }
     },
