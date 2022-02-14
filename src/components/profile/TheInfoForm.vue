@@ -1,5 +1,88 @@
+<script lang="ts" setup>
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const data = reactive({
+  isActive: false,
+  isDisabled: true,
+  name: "",
+  email: "",
+});
+
+function goBack(): void {
+  router.back();
+}
+
+function toggleActive(bb: boolean): void {
+  data.isActive = bb;
+}
+
+function onKey(): void {
+  //si le formulaire est complété
+  if (data.name.length !== 0 && data.email.length !== 0) {
+    //on regarde si le bouton n'est pas déjà actif
+    data.isDisabled = false;
+    toggleActive(true);
+  } else {
+    //si le formulaire n'est pas rempli
+    //si le bouton n'est pas déjà désactivé
+    toggleActive(false);
+    data.isDisabled = true;
+  }
+}
+</script>
+
+<template>
+  <div class="info-form-container">
+    <div class="header">
+      <div class="banner">
+        <a @click="goBack"><i class="fas fa-chevron-left"></i></a>
+        <h2>Profile</h2>
+        <button
+          type="button"
+          class="not-active"
+          :class="data.isActive === true ? 'active' : ''"
+          :disabled="data.isDisabled"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+    <div class="all">
+      <div class="form">
+        <div class="content">
+          <label for="name">Name</label>
+          <input
+            @keyup="onKey"
+            v-model="data.name"
+            type="text"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+        <hr />
+        <div class="content">
+          <label for="email">Email</label>
+          <input
+            @keyup="onKey"
+            v-model="data.email"
+            type="email"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -12,7 +95,9 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-button, input[type="submit"], input[type="reset"] {
+button,
+input[type="submit"],
+input[type="reset"] {
   background: none;
   color: inherit;
   border: none;
@@ -132,3 +217,4 @@ button {
 .active {
   color: var(--red);
 }
+</style>

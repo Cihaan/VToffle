@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 //IMPORTATION COMPONENT
-import TheLanding from "../components/auth/landing/TheLanding.vue";
-import TheLogin from "../components/auth/login/TheLogin.vue";
-import TheRegister from "../components/auth/register/TheRegister.vue";
-import TheProfile from "../components/profile/profile/TheProfile.vue";
-import TheInfoForm from "../components/profile/info-form/TheInfoForm.vue";
-import ThePasswordForm from "../components/profile/pwd-form/ThePasswordForm.vue";
+import TheLanding from "../components/auth/TheLanding.vue";
+import TheLogin from "../components/auth/TheLogin.vue";
+import TheRegister from "../components/auth/TheRegister.vue";
+import TheProfile from "../components/profile/TheProfile.vue";
+import TheInfoForm from "../components/profile/TheInfoForm.vue";
+import ThePasswordForm from "../components/profile/ThePasswordForm.vue";
 
 //ROUTES
 const routes: RouteRecordRaw[] = [
