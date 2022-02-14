@@ -3,7 +3,6 @@ import { createApp } from "vue";
 
 import router from "./router/route";
 import store from "./store/store";
-import './axios/axios'
 
 //IMPORTATION COMPONENT
 import TheNavBar from "./components/navbar/TheNavBar.vue";

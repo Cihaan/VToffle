@@ -11,8 +11,8 @@ const data = reactive({
   email: "",
 });
 
-function goBack(): void {
-  router.back();
+async function goBack(): Promise<void> {
+  await router.back();
 }
 
 function toggleActive(bb: boolean): void {

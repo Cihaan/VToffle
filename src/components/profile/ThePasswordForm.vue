@@ -11,8 +11,8 @@ const data = reactive({
   cpassword: "",
 });
 
-function goBack(): void {
-  router.back();
+async function goBack(): Promise<void> {
+  await router.back();
 }
 
 function toggleActive(bb: boolean): void {

@@ -21,7 +21,27 @@ function showPassword(event: Event): void {
   }
 }
 
-function handleSubmit(): void {}
+async function handleSubmit(): Promise<void> {
+  let user = {
+    username: data.name,
+    email: data.email,
+    password: data.password,
+  };
+
+  try {
+    await fetch("http://localhost:5000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(user),
+    });
+  } catch (error) {
+    throw error;
+  }
+}
 </script>
 
 <template>
