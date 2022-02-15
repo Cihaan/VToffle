@@ -46,8 +46,8 @@ async function handleSubmit(): Promise<void> {
     })
     .catch((err) => {
       data.state = "sent";
-      data.title = "Oops !";
-      data.msg = "Your credentials may have already been used !";
+      data.title = err.response.data.type;
+      data.msg = err.response.data.message;
       data.to = "";
     });
 }
@@ -70,7 +70,7 @@ async function handleSubmit(): Promise<void> {
         type="email"
         class="text-field"
       />
-      <div class="center" v-if="data.state === 'sending'">
+      <div class="centerr" v-if="data.state === 'sending'">
         <TheLoading />
       </div>
       <TheNotifBox
@@ -115,7 +115,7 @@ async function handleSubmit(): Promise<void> {
 </template>
 
 <style lang="scss" scoped>
-.center {
+.centerr {
   position: absolute;
   z-index: 1;
   margin: 0;
@@ -124,6 +124,17 @@ async function handleSubmit(): Promise<void> {
   left: 55%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.center {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 85%;
 }
 
 .password-container {

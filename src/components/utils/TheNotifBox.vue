@@ -13,7 +13,7 @@ const props = defineProps({
     <p id="p1">{{ props.title }}</p>
     <p id="p2">{{ props.msg }}</p>
     <hr />
-    <router-link class="button" tag="div" :to="{ path: '/' + props.to }"
+    <router-link class="button" tag="div" id="azer" :to="{ path: '/' + props.to }"
       ><button>OK</button></router-link
     >
   </div>
@@ -66,6 +66,9 @@ const props = defineProps({
     width: 100%;
     font-size: 1.1em;
     letter-spacing: 1.1px;
+  }
+  a {
+    width: 100%;
   }
 }
 </style>
