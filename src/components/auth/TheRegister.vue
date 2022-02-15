@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
+import axios from "axios";
+import TheLoading from "../utils/TheLoading.vue";
+import TheNotifBox from "../utils/TheNotifBox.vue";
 
 const data = reactive({
   name: "",
   email: "",
   password: "",
+  state: "",
+  to: "login",
+  title: "",
+  msg: "",
 });
 
 function showPassword(event: Event): void {
@@ -28,19 +35,21 @@ async function handleSubmit(): Promise<void> {
     password: data.password,
   };
 
-  try {
-    await fetch("http://localhost:5000/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(user),
+  data.state = "sending";
+  let res = await axios
+    .post("http://localhost:5000/auth/register", user)
+    .then((rep) => {
+      data.state = "sent";
+      data.title = "Congratulations !";
+      data.msg = "Your account has been created successfully !";
+      data.to = "login";
+    })
+    .catch((err) => {
+      data.state = "sent";
+      data.title = "Oops !";
+      data.msg = "Your credentials may have already been used !";
+      data.to = "";
     });
-  } catch (error) {
-    throw error;
-  }
 }
 </script>
 
@@ -61,7 +70,18 @@ async function handleSubmit(): Promise<void> {
         type="email"
         class="text-field"
       />
+      <div class="center" v-if="data.state === 'sending'">
+        <TheLoading />
+      </div>
+      <TheNotifBox
+        v-if="data.state === 'sent'"
+        :title="data.title"
+        :msg="data.msg"
+        :to="data.to"
+        class="center"
+      />
       <label for="password">Password</label>
+
       <div class="password-container">
         <input
           v-model="data.password"
@@ -70,6 +90,7 @@ async function handleSubmit(): Promise<void> {
           type="password"
           class="text-field"
         />
+
         <img
           class="eye"
           @click="showPassword"
@@ -94,6 +115,17 @@ async function handleSubmit(): Promise<void> {
 </template>
 
 <style lang="scss" scoped>
+.center {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .password-container {
   position: relative;
   .eye {
