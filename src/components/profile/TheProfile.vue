@@ -1,4 +1,29 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import axios from "axios";
+import { onMounted } from "vue";
+import router from "../../router/route";
+
+let header = {
+  headers: {
+    authorization: "BEARER " + localStorage.token,
+  },
+};
+
+const on = onMounted(async () => {
+  await axios
+    .get("http://localhost:5000/auth/user", header)
+    .then((rep) => {
+      if (rep.status !== 200) {
+        router.push({ path: "/landing" });
+      }
+    })
+    .catch((err) => {
+      if (err.response.data === "Forbidden") {
+        router.push({ path: "/landing" });
+      }
+    });
+});
+</script>
 
 <template>
   <div class="profile-container">

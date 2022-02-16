@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import axios from "axios";
+import router from "../../router/route";
+import TheLoading from "../utils/TheLoading.vue";
+import TheNotifBox from "../utils/TheNotifBox.vue";
 
 const data = reactive({
   email: "",
   password: "",
+  state: "",
+  title: "",
+  msg: "",
+  to: "",
 });
 
 function showPassword(event: Event): void {
@@ -20,6 +27,30 @@ function showPassword(event: Event): void {
     element.previousElementSibling?.setAttribute("type", "password");
   }
 }
+
+async function handleSubmit(): Promise<void> {
+  let user = {
+    email: data.email,
+    password: data.password,
+  };
+
+  data.state = "sending";
+  let res = await axios
+    .post("http://localhost:5000/auth/login", user)
+    .then((rep) => {
+      if (rep.statusText === "OK") {
+        data.state = "";
+        localStorage.token = rep.data.accessToken;
+        router.push({ path: "/profile" });
+      }
+    })
+    .catch((err) => {
+      data.state = "sent";
+      data.title = err.response.data.type;
+      data.msg = err.response.data.message;
+      data.to = "";
+    });
+}
 </script>
 
 <template>
@@ -31,6 +62,17 @@ function showPassword(event: Event): void {
     <div>
       <label for="email">Email</label>
       <input v-model="data.email" type="text" class="text-field" />
+      <div class="centerr" v-if="data.state === 'sending'">
+        <TheLoading />
+      </div>
+      <TheNotifBox
+        v-if="data.state === 'sent'"
+        :title="data.title"
+        :msg="data.msg"
+        :to="data.to"
+        class="center"
+      />
+      <router-view></router-view>
       <label for="password">Password</label>
       <div class="password-container">
         <input v-model="data.password" type="password" class="text-field" />
@@ -43,9 +85,7 @@ function showPassword(event: Event): void {
       </div>
     </div>
     <div class="buttons">
-      <router-link to="/find">
-        <input type="button" class="btn btn-primary" value="Log in" />
-      </router-link>
+      <input type="button" @click="handleSubmit" class="btn btn-primary" value="Log in" />
       <hr class="hrr" />
       <router-link to="/register">
         <input type="button" class="btn btn-secondary" value="Sign up" />
@@ -55,6 +95,27 @@ function showPassword(event: Event): void {
 </template>
 
 <style lang="scss" scoped>
+.centerr {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.center {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 85%;
+}
 .password-container {
   position: relative;
   .eye {
