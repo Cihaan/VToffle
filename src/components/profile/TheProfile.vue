@@ -29,7 +29,6 @@ const on = onMounted(async () => {
       }
       data.user = rep.data[0];
       data.fetching = false;
-      console.log(data.user);
     })
     .catch((err) => {
       if (err.response.data === "Forbidden") {
@@ -57,7 +56,7 @@ async function logOut(): Promise<void> {
         <img src="../../assets/logos/profile-icon.png" alt="profile" />
         <h2>{{ data.user.username }}</h2>
         <p>{{ data.user.email }}</p>
-        <p id="joined">created on : {{ data.user.created_on.split("T")[0] }}</p>
+        <p id="joined">created on : {{ data.user.created_on.split("T")[0].substring(0, 4) }}</p>
       </div>
       <div class="profile-menu">
         <router-link to="info-form">

@@ -7,6 +7,7 @@ import TheRegister from "../components/auth/TheRegister.vue";
 import TheProfile from "../components/profile/TheProfile.vue";
 import TheInfoForm from "../components/profile/TheInfoForm.vue";
 import ThePasswordForm from "../components/profile/ThePasswordForm.vue";
+import TheFind from "../components/find/TheFind.vue";
 
 //ROUTES
 const routes: RouteRecordRaw[] = [
@@ -43,6 +44,11 @@ const routes: RouteRecordRaw[] = [
     path: "/pwd-form",
     name: "ThePasswordForm",
     component: ThePasswordForm,
+  },
+  {
+    path: "/find",
+    name: "TheFind",
+    component: TheFind,
   },
 ];
 
