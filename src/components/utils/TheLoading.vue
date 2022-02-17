@@ -1,10 +1,23 @@
 <script lang="ts" script></script>
 
 <template>
-  <div class="lds-dual-ring"></div>
+  <div class="centerr">
+    <div class="lds-dual-ring"></div>
+  </div>
 </template>
 
 <style lang="scss">
+.centerr {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .lds-dual-ring {
   display: inline-block;
   width: 80px;

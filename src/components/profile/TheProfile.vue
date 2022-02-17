@@ -2,6 +2,18 @@
 import axios from "axios";
 import { onMounted } from "vue";
 import router from "../../router/route";
+import { reactive } from "vue";
+import TheLoading from "../utils/TheLoading.vue";
+
+const data = reactive({
+  user: {
+    id: 0,
+    username: "",
+    email: "",
+    created_on: "",
+  },
+  fetching: true,
+});
 
 let header = {
   headers: {
@@ -10,12 +22,16 @@ let header = {
 };
 
 const on = onMounted(async () => {
+  data.fetching = true;
   await axios
     .get("http://localhost:5000/auth/user", header)
     .then((rep) => {
       if (rep.status !== 200) {
         router.push({ path: "/landing" });
       }
+      data.user = rep.data[0];
+      data.fetching = false;
+      console.log(data.user);
     })
     .catch((err) => {
       if (err.response.data === "Forbidden") {
@@ -23,21 +39,27 @@ const on = onMounted(async () => {
       }
     });
 });
+
+async function logOut(): Promise<void> {
+  localStorage.token = null;
+  router.push({ path: "/landing" });
+}
 </script>
 
 <template>
   <div class="profile-container">
     <div class="header">
       <div class="banner">
-        <!-- <a @click="goBack"><i class="fas fa-chevron-left"></i></a> -->
         <h2>Profile</h2>
       </div>
     </div>
     <div class="all">
+      <TheLoading v-if="data.fetching === true" />
       <div class="image-profile">
         <img src="../../assets/logos/profile-icon.png" alt="profile" />
-        <h2>Francky Brooks</h2>
-        <p>francky@gmail.com</p>
+        <h2>{{ data.user.username }}</h2>
+        <p>{{ data.user.email }}</p>
+        <p id="joined">created on : {{ data.user.created_on.split("T")[0] }}</p>
       </div>
       <div class="profile-menu">
         <router-link to="info-form">
@@ -54,15 +76,18 @@ const on = onMounted(async () => {
           </div>
         </router-link>
       </div>
-      <router-link tag="button" class="btn btn-secondary" to="/landing"
-        >Log Out
-      </router-link>
+      <button @click="logOut" class="btn btn-secondary">Log Out</button>
+      <router-view></router-view>
     </div>
     <the-navbar></the-navbar>
   </div>
 </template>
 
 <style lang="scss" scoped>
+#joined {
+  color: var(--dark-01);
+}
+
 .profile-container {
   box-sizing: border-box;
   height: 100vh;
