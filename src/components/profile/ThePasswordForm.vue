@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import axios from "axios";
+import TheLoading from "../utils/TheLoading.vue";
+import TheNotifBox from "../utils/TheNotifBox.vue";
 
 const router = useRouter();
 
@@ -9,6 +13,11 @@ const data = reactive({
   isDisabled: true,
   password: "",
   cpassword: "",
+  id: 0,
+  state: "",
+  to: "login",
+  title: "",
+  msg: "",
 });
 
 async function goBack(): Promise<void> {
@@ -46,6 +55,55 @@ function showPassword(event: Event): void {
     element.previousElementSibling?.setAttribute("type", "password");
   }
 }
+
+const on = onMounted(async () => {
+  data.state = "sending";
+  await axios
+    .get("http://localhost:5000/auth/user", {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
+    .then((rep) => {
+      if (rep.status !== 200) {
+        router.push({ path: "/landing" });
+      }
+      data.id = rep.data[0].id;
+      data.state = "";
+    })
+    .catch((err) => {
+      if (err.response.data === "Forbidden") {
+        router.push({ path: "/landing" });
+      }
+    });
+});
+
+async function handleSubmit(): Promise<void> {
+  let user = {
+    password: data.password,
+    cpassword: data.cpassword,
+  };
+
+  data.state = "sending";
+  let res = await axios
+    .post(`http://localhost:5000/profile/pwd/${data.id}`, user, {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
+    .then((rep) => {
+      data.state = "sent";
+      data.title = rep.data.title;
+      data.msg = rep.data.message;
+      data.to = "profile";
+    })
+    .catch((err) => {
+      data.state = "sent";
+      data.title = err.response.data.type;
+      data.msg = err.response.data.message;
+      data.to = "profile";
+    });
+}
 </script>
 
 <template>
@@ -59,12 +117,22 @@ function showPassword(event: Event): void {
             type="button"
             :class="data.isActive === true ? 'active' : 'not-active'"
             :disabled="data.isDisabled"
+            @click="handleSubmit"
           >
             Done
           </button>
+          <router-view></router-view>
         </div>
       </div>
       <div class="all">
+      <TheLoading v-if="data.state === 'sending'"/>
+      <TheNotifBox
+        v-if="data.state === 'sent'"
+        :title="data.title"
+        :msg="data.msg"
+        :to="data.to"
+        class="center"
+      />
         <div class="form">
           <div class="content">
             <label for="password">Password</label>
@@ -122,6 +190,18 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+
+.center {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 85%;
+}
 .info-form-container {
   box-sizing: border-box;
   height: 100vh;

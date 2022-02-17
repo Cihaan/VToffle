@@ -84,8 +84,8 @@ async function handleSubmit(): Promise<void> {
     .then((rep) => {
       data.fetching = false;
       data.state = "sent";
-      data.title = "Notification";
-      data.msg = "Your informations have been updated successfully";
+      data.title = rep.data.title;
+      data.msg = rep.data.message;
       data.to = "profile";
     })
     .catch((err) => {

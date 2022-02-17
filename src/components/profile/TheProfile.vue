@@ -12,7 +12,7 @@ const data = reactive({
     email: "",
     created_on: "",
   },
-  fetching: true,
+  fetching: false,
 });
 
 const on = onMounted(async () => {

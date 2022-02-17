@@ -30,7 +30,8 @@ const on = onMounted(async () => {
     })
     .catch((err) => {
       if (err.response.data === "Forbidden") {
-        router.push({ path: "/landing" });
+        router.push({ path: "/login" });
+        data.state = ""
       }
     });
 });
