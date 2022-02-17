@@ -4,6 +4,7 @@ import axios from "axios";
 import router from "../../router/route";
 import TheLoading from "../utils/TheLoading.vue";
 import TheNotifBox from "../utils/TheNotifBox.vue";
+import { onMounted } from "vue";
 
 const data = reactive({
   email: "",
@@ -12,6 +13,26 @@ const data = reactive({
   title: "",
   msg: "",
   to: "",
+});
+
+const on = onMounted(async () => {
+  data.state = "sending";
+  await axios
+    .get("http://localhost:5000/auth/user", {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
+    .then((rep) => {
+      if (rep.status === 200) {
+        router.push({ path: "/profile" });
+      }
+    })
+    .catch((err) => {
+      if (err.response.data === "Forbidden") {
+        router.push({ path: "/landing" });
+      }
+    });
 });
 
 function showPassword(event: Event): void {

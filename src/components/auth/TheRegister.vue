@@ -70,9 +70,7 @@ async function handleSubmit(): Promise<void> {
         type="email"
         class="text-field"
       />
-      <div class="centerr" v-if="data.state === 'sending'">
-        <TheLoading />
-      </div>
+      <TheLoading v-if="data.state === 'sending'" />
       <TheNotifBox
         v-if="data.state === 'sent'"
         :title="data.title"
@@ -115,16 +113,6 @@ async function handleSubmit(): Promise<void> {
 </template>
 
 <style lang="scss" scoped>
-.centerr {
-  position: absolute;
-  z-index: 1;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 55%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
 .center {
   position: absolute;
   z-index: 1;

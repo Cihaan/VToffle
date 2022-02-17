@@ -1,14 +1,26 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import axios from "axios";
+import TheLoading from "../utils/TheLoading.vue";
+import TheNotifBox from "../utils/TheNotifBox.vue";
 
 const router = useRouter();
 
 const data = reactive({
   isActive: false,
   isDisabled: true,
-  name: "",
-  email: "",
+  user: {
+    id: 0,
+    name: "",
+    email: "",
+  },
+  fetching: true,
+  state: "",
+  to: "login",
+  title: "",
+  msg: "",
 });
 
 async function goBack(): Promise<void> {
@@ -21,7 +33,7 @@ function toggleActive(bb: boolean): void {
 
 function onKey(): void {
   //si le formulaire est complété
-  if (data.name.length !== 0 && data.email.length !== 0) {
+  if (data.user.name.length !== 0 && data.user.email.length !== 0) {
     //on regarde si le bouton n'est pas déjà actif
     data.isDisabled = false;
     toggleActive(true);
@@ -31,6 +43,58 @@ function onKey(): void {
     toggleActive(false);
     data.isDisabled = true;
   }
+}
+
+const on = onMounted(async () => {
+  data.fetching = true;
+  await axios
+    .get("http://localhost:5000/auth/user", {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
+    .then((rep) => {
+      if (rep.status !== 200) {
+        router.push({ path: "/landing" });
+      }
+      data.user.id = rep.data[0].id;
+      data.fetching = false;
+      console.log(data.user);
+    })
+    .catch((err) => {
+      if (err.response.data === "Forbidden") {
+        router.push({ path: "/landing" });
+      }
+    });
+});
+
+async function handleSubmit(): Promise<void> {
+  let user = {
+    username: data.user.name,
+    email: data.user.email,
+  };
+
+  data.fetching = true;
+  let res = await axios
+    .post(`http://localhost:5000/profile/info/${data.user.id}`, user, {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
+    .then((rep) => {
+      data.fetching = false;
+      data.state = "sent";
+      data.title = "Notification";
+      data.msg = "Your informations have been updated successfully";
+      data.to = "profile";
+    })
+    .catch((err) => {
+      data.fetching = false;
+      data.state = "sent";
+      data.title = err.response.data.type;
+      data.msg = err.response.data.message;
+      data.to = "";
+    });
 }
 </script>
 
@@ -45,18 +109,28 @@ function onKey(): void {
           class="not-active"
           :class="data.isActive === true ? 'active' : ''"
           :disabled="data.isDisabled"
+          @click="handleSubmit"
         >
           Done
         </button>
+        <router-view></router-view>
       </div>
     </div>
     <div class="all">
+      <TheLoading v-if="data.fetching === true" />
+      <TheNotifBox
+        v-if="data.state === 'sent'"
+        :title="data.title"
+        :msg="data.msg"
+        :to="data.to"
+        class="center"
+      />
       <div class="form">
         <div class="content">
           <label for="name">Name</label>
           <input
             @keyup="onKey"
-            v-model="data.name"
+            v-model="data.user.name"
             type="text"
             id="name"
             name="name"
@@ -68,7 +142,7 @@ function onKey(): void {
           <label for="email">Email</label>
           <input
             @keyup="onKey"
-            v-model="data.email"
+            v-model="data.user.email"
             type="email"
             id="email"
             name="email"
@@ -93,6 +167,18 @@ select:-webkit-autofill:focus {
   border: none;
   -webkit-text-fill-color: var(--white);
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.center {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 85%;
 }
 
 button,

@@ -15,16 +15,14 @@ const data = reactive({
   fetching: true,
 });
 
-let header = {
-  headers: {
-    authorization: "BEARER " + localStorage.token,
-  },
-};
-
 const on = onMounted(async () => {
   data.fetching = true;
   await axios
-    .get("http://localhost:5000/auth/user", header)
+    .get("http://localhost:5000/auth/user", {
+      headers: {
+        authorization: "BEARER " + localStorage.token,
+      },
+    })
     .then((rep) => {
       if (rep.status !== 200) {
         router.push({ path: "/landing" });
