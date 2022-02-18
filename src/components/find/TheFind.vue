@@ -2,11 +2,12 @@
 import { reactive } from "vue";
 import TheNavBar from "../navbar/TheNavBar.vue";
 import global from "../../composables/store";
-import ListMovie from "./ListMovies.vue"
+import ListMovies from "./ListMovies.vue"
+import ListShows from "./ListShows.vue";
 
 const data = reactive({
   showingMovies: "Movies",
-  searching: " ",
+  searching: "",
   isTyping: false,
 });
 
@@ -16,6 +17,7 @@ function toggleMovies(_ev: Event): void {
   if (data.showingMovies !== (_ev.target as HTMLInputElement).value) {
     data.showingMovies = data.showingMovies == "Movies" ? "TV Shows" : "Movies";
   }
+  
 }
 
 function onKey(event: Event): void {
@@ -26,7 +28,7 @@ function onKey(event: Event): void {
 }
 
 function Close(): void {
-  data.searching = " ";
+  data.searching = "";
   data.isTyping = false;
   search(data.searching)
 }
@@ -74,11 +76,8 @@ function Close(): void {
       </div>
     </div>
     <div class="all">
-    <ListMovie v-for="movie in store.fmovies" :movie="movie" v-if="data.showingMovies === 'Movies'" />
-      <!-- <app-show-list-find
-        [shows]="shows"
-        *ngIf="this.showingMovies === 'TV Shows'"
-      ></app-show-list-find> -->
+    <ListMovies v-for="movie in store.fmovies" :movie="movie" v-if="data.showingMovies === 'Movies'" />
+    <ListShows v-for="show in store.fshows" :show="show"  />
     </div>
     <TheNavBar />
   </div>

@@ -1,7 +1,8 @@
 export default class Show {
-    idshow!:number;
+    id!:number;
     title!:string;
     poster_path!:string;
+    release_date!: string;
     number_of_season!:number;
     number_of_episode!:number;
     backdrop_path?: string; //TODO: mettre l'attribut en ! au lieu de ?

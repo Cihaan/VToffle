@@ -1,33 +1,32 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue';
-import Movie from '../../models/movie.model';
+import Show from "../../models/show.model"
 import { readonly } from 'vue';
 
 const props = defineProps({
-  movie: Movie
+  show: Show
 })
 
 
 
-const { movie } = toRefs(props);
+const { show } = toRefs(props);
 </script>
 
 <template>
-<!-- @click="handleClick($event)" -->
-
-<div class="media-box" >
-    <div :id="movie.id" class="media">
-        <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt="media-picture" />
+<div :id="show.id" class="media-box">
+    <div class="media">
+        <img :src="'https://image.tmdb.org/t/p/w500' + show.poster_path" alt="media-picture" />
         <div class="media-text-box">
             <div class="media-text">
-                <h2 class="media-title">{{ movie.title + " (" + movie.release_date.substring(0, 4) +")"}}</h2>
+             
+                <h2 class="media-title">{{show.name + " (" + show.first_air_date.substring(0, 4) +")"}}</h2>
                 <p class="synopsis">
-                    {{movie.overview}}
+                    {{show.overview}}
                 </p>
             </div>
-            <p class="duration">Duration : {{movie.runtime}} min</p>
+            <p class="duration">Seasons : {{show.number_of_seasons}} Episodes : {{show.number_of_episodes}}</p>
             <div class="pop-percent">
-                <p class="percent">{{movie.vote_average * 10}}%</p>
+                <p class="percent">{{show.vote_average*10}}%</p>
                 <img class="point3" src="../../assets/logos/point3.svg" alt="point" />
             </div>
         </div>
@@ -78,6 +77,7 @@ img[alt="media-picture"] {
     object-fit: cover;
     border-radius: 5px;
 }
+
 
 .synopsis {
     font-weight: 400;
